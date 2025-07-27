@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual Environment
+venv/
+.env # If you ever use environment variables in a .env file (good practice for secrets)
+
+# Operating System files
+.DS_Store # macOS specific
+Thumbs.db # Windows specific
+
+# Editor specific files (VS Code)
+.vscode/
