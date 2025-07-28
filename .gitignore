@@ -14,3 +14,6 @@ Thumbs.db # Windows specific
 
 # Editor specific files (VS Code)
 .vscode/
+
+# Database files
+todo.db
