@@ -4,9 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Flask Todo App</title>
+    <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
   </head>
   <body>
-    <h1>Hello from Flask! This is a Todo App.</h1>
-    <p>Ready to start building?</p>
+    <h1>Todo App</h1>
+
+    <form id="todo-form">
+      <input
+        type="text"
+        id="todo-title"
+        name="title"
+        placeholder="Enter a new todo..."
+      />
+      <button type="submit">Add Todo</button>
+    </form>
+
+    <h2>Todos:</h2>
+
+    <ul id="todo-list"></ul>
   </body>
 </html>
