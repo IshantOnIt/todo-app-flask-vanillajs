@@ -45,8 +45,26 @@ document.addEventListener("DOMContentLoaded", function () {
     listItemLabel.appendChild(listItemCheckbox);
     listItemLabel.appendChild(listItemSpan);
 
+    const listItemDeleteButton = document.createElement("button");
+    listItemDeleteButton.innerText = "Delete";
+    listItemDeleteButton.addEventListener("click", async (e) => {
+      try {
+        const res = await fetch(`/api/todos/${todo.id}`, {
+          method: "DELETE",
+        });
+        if (!res.ok) {
+          throw new Error("Error deleting todo");
+        }
+        todoList.removeChild(e.target.parentNode);
+      } catch (e) {
+        console.error("Error deleting todo: ", e);
+      }
+    });
+
     const listItem = document.createElement("li");
     listItem.appendChild(listItemLabel);
+    listItem.appendChild(listItemDeleteButton);
+
     todoList.appendChild(listItem);
   }
 
