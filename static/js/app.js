@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
           body: JSON.stringify({ completed: e.target.checked }),
         });
         const updatedTodo = await res.json();
-        if (!updatedTodo) {
+        if (!updatedTodo || updatedTodo.completed === null) {
           throw new Error("Error updating todo");
         }
         listItemCheckbox.checked = updatedTodo.completed;

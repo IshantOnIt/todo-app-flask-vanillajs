@@ -93,7 +93,7 @@ def update_todo(todo_id):
         return jsonify({'error': 'Todo not found'}), 404
 
     conn.close()
-    return jsonify({'message': 'Todo updated successfully'}), 200
+    return jsonify({'message': 'Todo updated successfully', 'id': todo_id, 'title': title, 'completed': completed}), 200
 
 # Delete a todo
 @app.route("/api/todos/<int:todo_id>", methods=['DELETE'])
