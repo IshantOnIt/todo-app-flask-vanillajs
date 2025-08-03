@@ -61,8 +61,49 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
+    const listItemEditButton = document.createElement("button");
+    listItemEditButton.innerText = "Edit";
+    listItemEditButton.addEventListener("click", () => {
+      const input = document.createElement("input");
+      input.type = "text";
+      input.value = todo.title;
+      listItemLabel.replaceChild(input, listItemSpan);
+      input.focus();
+
+      const save = async () => {
+        const newTitle = input.value.trim();
+        if (newTitle && newTitle !== todo.title) {
+          try {
+            const res = await fetch(`/api/todos/${todo.id}`, {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ title: newTitle }),
+            });
+            const updated = await res.json();
+            todo.title = updated.title;
+            listItemSpan.innerText = updated.title;
+          } catch (e) {
+            console.error("Error updating title: ", e);
+          }
+        }
+        listItemLabel.replaceChild(listItemSpan, input);
+      };
+
+      input.addEventListener("blur", save);
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          input.blur();
+        } else if (e.key === "Escape") {
+          listItemLabel.replaceChild(listItemSpan, input);
+        }
+      });
+    });
+
     const listItem = document.createElement("li");
     listItem.appendChild(listItemLabel);
+    listItem.appendChild(listItemEditButton);
     listItem.appendChild(listItemDeleteButton);
 
     todoList.appendChild(listItem);
