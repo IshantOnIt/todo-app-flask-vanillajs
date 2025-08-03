@@ -1,3 +1,5 @@
+import { deleteTodo, fetchTodos, updateTodo } from "./api.js";
+
 document.addEventListener("DOMContentLoaded", function () {
   const todoform = document.getElementById("todo-form");
   const todoTitle = document.getElementById("todo-title");
@@ -5,36 +7,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   async function loadTodos() {
     try {
-      const res = await fetch("/api/todos");
-      const todos = await res.json();
+      const todos = await fetchTodos();
       todos.forEach((todo) => {
         createTodo(todo);
       });
     } catch (e) {
       console.error("Error loading todos: ", e);
-    }
-  }
-
-  async function updateTodo(id, updates) {
-    const res = await fetch(`/api/todos/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updates),
-    });
-
-    const updatedTodo = await res.json();
-
-    return updatedTodo;
-  }
-
-  async function deleteTodo(id) {
-    const res = await fetch(`/api/todos/${todo.id}`, {
-      method: "DELETE",
-    });
-    if (!res.ok) {
-      throw new Error("Error deleting todo");
     }
   }
 
@@ -126,6 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   todoform.addEventListener("submit", async (e) => {
     e.preventDefault();
+    console.log("submitted");
     const title = todoTitle.value;
     try {
       const res = await fetch("/api/todos", {
