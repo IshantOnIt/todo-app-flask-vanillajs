@@ -29,6 +29,15 @@ document.addEventListener("DOMContentLoaded", function () {
     return updatedTodo;
   }
 
+  async function deleteTodo(id) {
+    const res = await fetch(`/api/todos/${todo.id}`, {
+      method: "DELETE",
+    });
+    if (!res.ok) {
+      throw new Error("Error deleting todo");
+    }
+  }
+
   function createTodo(todo) {
     const listItemCheckbox = document.createElement("input");
     listItemCheckbox.type = "checkbox";
@@ -60,12 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
     listItemDeleteButton.innerText = "Delete";
     listItemDeleteButton.addEventListener("click", async (e) => {
       try {
-        const res = await fetch(`/api/todos/${todo.id}`, {
-          method: "DELETE",
-        });
-        if (!res.ok) {
-          throw new Error("Error deleting todo");
-        }
+        await deleteTodo(todo.id);
         todoList.removeChild(e.target.parentNode);
       } catch (e) {
         console.error("Error deleting todo: ", e);
