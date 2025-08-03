@@ -15,23 +15,34 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  async function updateTodo(id, updates) {
+    const res = await fetch(`/api/todos/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updates),
+    });
+
+    const updatedTodo = await res.json();
+
+    return updatedTodo;
+  }
+
   function createTodo(todo) {
     const listItemCheckbox = document.createElement("input");
     listItemCheckbox.type = "checkbox";
     listItemCheckbox.checked = todo.completed;
     listItemCheckbox.addEventListener("change", async (e) => {
       try {
-        const res = await fetch(`/api/todos/${todo.id}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ completed: e.target.checked }),
+        const updatedTodo = await updateTodo(todo.id, {
+          completed: e.target.checked,
         });
-        const updatedTodo = await res.json();
+
         if (!updatedTodo || updatedTodo.completed === null) {
           throw new Error("Error updating todo");
         }
+
         listItemCheckbox.checked = updatedTodo.completed;
       } catch (e) {
         console.error("Error updating todo: ", e);
@@ -74,16 +85,16 @@ document.addEventListener("DOMContentLoaded", function () {
         const newTitle = input.value.trim();
         if (newTitle && newTitle !== todo.title) {
           try {
-            const res = await fetch(`/api/todos/${todo.id}`, {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ title: newTitle }),
+            const updatedTodo = await updateTodo(todo.id, {
+              title: newTitle,
             });
-            const updated = await res.json();
-            todo.title = updated.title;
-            listItemSpan.innerText = updated.title;
+
+            if (!updatedTodo || updatedTodo.title === null) {
+              throw new Error("Error updating todo");
+            }
+
+            todo.title = updatedTodo.title;
+            listItemSpan.innerText = updatedTodo.title;
           } catch (e) {
             console.error("Error updating title: ", e);
           }
